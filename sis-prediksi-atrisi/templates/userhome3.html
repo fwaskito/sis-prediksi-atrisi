@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="row">
+			<div class="p-2 col-md-12 text-center">
+			</div>
+		</div>
+        <div class="row">
+            <div class="col-md-11 col-12 mx-auto">
+                <div class="data_table">
+                    <div class="row">
+						<div class="col text-center">
+							<h4>Data Karyawan</h4>
+						</div>
+						<div class="col-3">
+							<button class="btn btn-primary btn-sm" id="btn-show-all-children" type="button">Expand All</button>
+							<button class="btn btn-light btn-sm btn-outline-danger" id="btn-hide-all-children" type="button">Collapse All</button>
+
+						</div>
+					</div>
+                    <hr>
+                    <span>Ekspor ke:</span>
+                    <table id="example" class="table table-bordered" width="100%">
+                        <thead>
+							<tr>
+								<th>ID</th>
+								<th>Age</th>
+								<th>Department</th>
+								<th class="none">Dist. from home</th>
+								<th class="none">Edu</th>
+								<th class="none">Edu field</th>
+                                <th class="none">Env Sat</th>
+                                <th class="none">Job Sat</th>
+                                <th class="none">Marital sts</th>
+                                <th class="none">Num comp worked</th>
+                                <th class="none">Salary</th>
+                                <th class="none">Wlb</th>
+                                <th class="none">Yeras at comp</th>
+                                <th class="None"></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>ID</th>
+								<th>Age</th>
+								<th>Department</th>
+								<th><span>Dist. from home</span></th>
+								<th><span>Education      </span></th>
+								<th><span>Edu field      </span></th>
+                                <th>Env sat</th>
+                                <th>Job sat</th>
+                                <th>Marital sts</th>
+                                <th>Num comp worked</th>
+                                <th>Salary</th>
+                                <th>Wlb</th>
+                                <th>Yeras at comp</th>
+                                <th></th>
+							</tr>
+						</tfoot>
+                        <tbody>
+                            {% for i in range(500) %}   
+							<tr>
+								<td>{{employees[i].id}}</td>
+								<td>{{employees[i].age}}</td>
+								<td>{{employees[i].department_name}}</td>
+                                <td>{{employees[i].dist_from_home}}</td>
+                                <td>{{employees[i].edu}}</td>
+                                <td>{{employees[i].edu_field}}</td>
+                                <td>{{employees[i].env_sat}}</td>
+                                <td>{{employees[i].job_sat}}</td>
+                                <td>{{employees[i].marital_sts}}</td>
+                                <td>{{employees[i].num_comp_worked}}</td>
+                                <td>{{employees[i].salary}}</td>
+                                <td>{{employees[i].wlb}}</td>
+                                <td>{{employees[i].years_at_comp}}</td>
+								<td>
+									<a class="add" title="Add" data-toggle="tooltip" id="{{employees[i].id}}"><i class="fa fa-user-plus"></i></a>
+									<a class="edit" title="Edit" data-toggle="tooltip" id="{{employees[i].id}}"><i class="fa-solid fa-user-pen"></i></a>
+									<a class="delete" title="Delete" data-toggle="tooltip" id="{{employees[i].id}}"><i class="fa-solid fa-user-minus"></i></a>
+								</td>
+							</tr>   
+							{% endfor %}    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

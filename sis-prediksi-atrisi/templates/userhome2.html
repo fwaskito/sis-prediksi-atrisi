@@ -1,0 +1,70 @@
+{% extends "base2.html" %}
+
+{% block title %}My App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row md-2">
+        <div class="col-md-12">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-11 col-12 mx-auto">
+            <div class="table-wrapper%">
+                <!---lepas style css---->
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h2>Employee <b>Details</b></h2>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                        </div>
+                        <div class='btn btn-info' id="displaymessage" style="display:none;width:100%;margin-top:10px;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <h4>Employees Data</h4>
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-primary btn-sm" id="btn-show-all-children" type="button">Expand All</button>
+                        <button class="btn btn-light btn-sm btn-outline-danger" id="btn-hide-all-children" type="button">Collapse All</button>
+        
+                    </div>
+                </div>
+                <hr>
+                <table class="table table-bordered" id="example">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in employees %}
+                        <tr>
+                            <td>{{row.name}}</td>
+                            <td>{{row.department}}</td>
+                            <td>{{row.phone}}</td>
+                            <td>
+                                <a class="add" title="Add" data-toggle="tooltip" id="{{row.id}}"><i
+                                        class="fa fa-user-plus"></i></a>
+                                <a class="edit" title="Edit" data-toggle="tooltip" id="{{row.id}}"><i
+                                        class="fa-solid fa-user-pen"></i></a>
+                                <a class="delete" title="Delete" data-toggle="tooltip" id="{{row.id}}"><i
+                                        class="fa-solid fa-user-minus"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!----close body content---------->
+</div>
+{% endblock %}

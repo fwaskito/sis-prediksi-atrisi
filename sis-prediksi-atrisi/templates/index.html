@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row m-4 p-4">
+		<div class="col-md-5 col-8">
+			<div class="row align-self-center">
+				<div class="col-12 ">
+					<h4 class="fw-bold display-6">Sistem prediksi atrisi karyawan</h4>
+						<a class="btn btn-lg btn-outline-primary mt-4" href="{{ url_for('logIn') }}" role="button">Login</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

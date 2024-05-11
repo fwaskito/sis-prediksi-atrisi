@@ -1,0 +1,10 @@
+/* ===== Data table = Start ======*/
+.data_table{
+	background: #fff;
+	padding: 15px;
+}
+
+.data_table .btn{
+	padding: 5px 10px;
+	margin-top: 10px;
+}

@@ -1,0 +1,164 @@
+{% extends "base3.html" %}
+
+{% block title %}Data Prediksi Atrisi Karyawan{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12 col-12">
+            <div class="data_table">
+                <div class="row align-items-end">
+                    <div class="p-2 ps-3 col-md-2 col-4 border shadow-sm">
+                        <small><b>Pengguna</b>: {{ session.get('user')['name'] }}</small></br>
+                        <small><b>Anda login sebagai</b>: {{ session.get('user')['type'] }}</small>
+                    </div>
+                    <div class="col text-center">
+                        <h4><b>Data Prediksi Atrisi</b></h4>
+                    </div>
+
+                    <div class="col-3 d-flex justify-content-end">
+                        <div class="row">
+                            <div class="col">
+                                <form action="/prediksi" method="POST">
+                                    <input type="hidden" name="predict_type" value="many">
+                                    <input class="btn btn-primary btn-sm shadow-sm" type="submit"
+                                        value="Prediksi Semua">
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form action="/simpanprediksi" method="POST">
+                                    <input type="hidden" name="predict_type" value="many">
+                                    <input class="btn btn-secondary btn-sm shadow-sm" type="submit"
+                                        value="Simpan Prediksi">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <span>Export to:</span>
+                        <table id="example" class="table table-responsive table-bordered table-hover shadow" width="100%">
+                            <thead>
+                                <tr class="">
+                                    <th>ID</th>
+                                    <th>Prediksi Atisi</th>
+                                    <th>Age</th>
+                                    <th>Department</th>
+                                    <th>DFH</th>
+                                    <th>Edu.</th>
+                                    <th>Edu. field</th>
+                                    <th class="none">Env. Sat.&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;</th>
+                                    <th class="none">Job Sat.&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Marital Sts.&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Num. Comp. Worked &ensp;</th>
+                                    <th class="none">Salary&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;</th>
+                                    <th class="none">WLB&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;</th>
+                                    <th class="none">Years at Comp.&emsp;&emsp;&emsp;&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Prediksi Atrisi</th>
+                                    <th>Age</th>
+                                    <th>Department</th>
+                                    <th>DFH</th>
+                                    <th>Edu.</th>
+                                    <th>Edu. Field</th>
+                                    <th>Env. Sat.</th>
+                                    <th>Job Sat.</th>
+                                    <th>Marital sts.</th>
+                                    <th>Num. Comp. Worked</th>
+                                    <th>Salary</th>
+                                    <th>WLB</th>
+                                    <th>Yeras at Comp.</th>
+                                </tr>
+                            </tfoot>
+                            <tbody class="table table-secondary">
+                                {% with predictions = session.get('predictions') %}
+                                {% for employee in test_data %}
+                                <tr>
+                                    <td>{{employee.id}}</td>
+
+                                    {% if predictions != None %}
+                                    {% if employee.id in predictions.keys() %}
+
+                                    {% if predictions.get(employee.id) == 'Yes' %}
+                                    <td class="table table-danger">{{predictions.get(employee.id)}}</td>
+                                    {% else %}
+                                    <td class="table table-success">{{predictions.get(employee.id)}}</td>
+                                    {% endif %}
+
+                                    {% else %}
+                                    <td class="table table-light">
+                                        <form action="/prediksi" method="POST">
+                                            <input type="hidden" name="predict_type" value="single">
+                                            <input type="hidden" name="id" value="{{employee.id}}">
+                                            <input class="btn btn-outline-primary btn-sm" type="submit" value="Prediksi">
+                                        </form>
+                                    </td class="table table-light">
+                                    {% endif %}
+                                    {% else %}
+                                    <td>
+                                        <form action="/prediksi" method="POST">
+                                            <input type="hidden" name="predict_type" value="single">
+                                            <input type="hidden" name="id" value="{{employee.id}}">
+                                            <input class="btn btn-outline-primary btn-sm" type="submit" value="Prediksi">
+                                        </form>
+                                    </td>
+                                    {% endif %}
+                                    <td>{{employee.age}}</td>
+                                    <td>{{employee.department_name}}</td>
+                                    <td>{{employee.dist_from_home}} km</td>
+                                    <td>{{employee.edu}}</td>
+                                    <td>{{employee.edu_field}}</td>
+                                    <td>{{employee.env_sat}}</td>
+                                    <td>{{employee.job_sat}}</td>
+                                    <td>{{employee.marital_sts}}</td>
+                                    <td>{{employee.num_comp_worked}}</td>
+                                    <td>{{employee.salary}}</td>
+                                    <td>{{employee.wlb}}</td>
+                                    <td>{{employee.years_at_comp}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endwith %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<!-- Message Modal -->
+<div class="modal fade modal-sm" id="messageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    <font style="color: green;"><i class="fa-solid fa-circle-check"></i>
+                        &ensp; Aksi Berhasil.</font>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-md-center">
+                {% for message in messages %}
+                <p>{{message}}</p>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% endblock %}

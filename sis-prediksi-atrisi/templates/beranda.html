@@ -1,0 +1,428 @@
+{% extends "base2.html" %}
+
+{% block title %}Beranda - Data Karyawan{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12 col-12">
+            <div class="data_table">
+                <div class="row align-items-end">
+                    <div class="p-2 ps-3 col-md-2 col-4 border shadow-sm">
+                        <small><b>Pengguna</b>: {{ session.get('user')['name'] }}</small></br>
+                        <small><b>Anda login sebagai</b>: {{ session.get('user')['type'] }}</small>
+                    </div>
+                    <div class="col text-center">
+                        <h4><b>Data Karyawan</b></h4>
+                    </div>
+
+                    <div class="col-md-2 col-4 d-flex justify-content-end">
+                        <a class="editMuch btn btn-outline-primary" type="button" title="Add data karyawan"
+                            data-bs-toggle="modal" data-bs-target="#addModal">
+                            <i class="fa-solid fa-user-plus"></i> Tambah
+                        </a>
+                        <!--
+                        <button class="btn btn-primary btn-sm shadow-sm" id="btn-show-all-children" type="button">Expand
+                            All</button>
+                        <button class="btn btn-light btn-sm btn-outline-danger shadow-sm" id="btn-hide-all-children"
+                            type="button">Collapse All</button>-->
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <table id="example" class="table table-bordered table-hover shadow" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Attrition</th>
+                                    <th>Age</th>
+                                    <th>Department</th>
+                                    <th>DFH</th>
+                                    <th>Edu.</th>
+                                    <th>Edu. field</th>
+                                    <th class="none">Env. Sat.&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;</th>
+                                    <th class="none">Job Sat.&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Marital sts.&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Num. comp. worked &ensp;</th>
+                                    <th class="none">Salary&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;</th>
+                                    <th class="none">WLB&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;</th>
+                                    <th class="none">Years at comp.&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Attrition</th>
+                                    <th>Age</th>
+                                    <th>Department</th>
+                                    <th>DFH</th>
+                                    <th>Edu.</th>
+                                    <th>Edu. field</th>
+                                    <th>Env. sat.</th>
+                                    <th>Job sat.</th>
+                                    <th>Marital sts.</th>
+                                    <th>Num. comp. worked</th>
+                                    <th>Salary</th>
+                                    <th>WLB</th>
+                                    <th>Yeras at comp.</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody class="table table-primary">
+                                {% for employee in employees %}
+                                <tr>
+                                    <td>{{employee.id}}</td>
+                                    {% if employee.attrition == None %}
+                                    <td>-</td>
+                                    {% else %}
+                                    <td><i>{{employee.attrition}}</i></td>
+                                    {% endif %}
+                                    <td>{{employee.age}}</td>
+                                    <td>{{employee.department_name}}</td>
+                                    <td>{{employee.dist_from_home}} km</td>
+                                    <td>{{employee.edu}}</td>
+                                    <td>{{employee.edu_field}}</td>
+                                    <td>{{employee.env_sat}}</td>
+                                    <td>{{employee.job_sat}}</td>
+                                    <td>{{employee.marital_sts}}</td>
+                                    <td>{{employee.num_comp_worked}}</td>
+                                    <td>{{employee.salary}}</td>
+                                    <td>{{employee.wlb}}</td>
+                                    <td>{{employee.years_at_comp}}</td>
+                                    <td class="table table-light">
+                                        <a class="edit" type="button" title="Edit data karyawan" data-bs-toggle="modal"
+                                            data-bs-target="#edit{{employee.id}}Modal">
+                                            <i class="fa-solid fa-user-pen"></i>
+                                        </a>
+                                        <a class="delete" type="button" title="Delete data karyawan"
+                                            data-bs-toggle="modal" data-bs-target="#delete{{employee.id}}Modal">
+                                            <i class="fa-solid fa-user-minus"></i>
+                                        </a>
+                                        </form>
+                                    </td>
+                                </tr>
+
+                                <!--- Modal Edit -->
+                                <div class="modal fade" id="edit{{employee.id}}Modal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                    Edit data karyawan {{employee.id}}</h1>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <form action="/edit" method="POST">
+                                                    <input type="hidden" class="form-control" name="id"
+                                                        value="{{employee.id}}">
+                                                    <fieldset disabled="disabled">
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-4 d-flex justify-content-end">
+                                                                <label for="exampleFormControlInput1">Id</label>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <input type="text" class="form-control" name="id"
+                                                                    value="{{employee.id}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row g-3 align-items-center">
+                                                            <div class="col-4 d-flex justify-content-end">
+                                                                <label for="exampleFormControlInput1">Attrition</label>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <input type="text" class="form-control" name="attrition"
+                                                                    value="{{employee.attrition}}">
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Age</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="age"
+                                                                value="{{employee.age}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Department</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="department"
+                                                                value="{{employee.department_name}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Dist. from
+                                                                Home</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control"
+                                                                name="dist_from_home"
+                                                                value="{{employee.dist_from_home}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Edu</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="edu"
+                                                                value="{{employee.edu}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Edu. Field</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="edu_field"
+                                                                value="{{employee.edu_field}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Env. Sat.</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="env_sat"
+                                                                value="{{employee.env_sat}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Job Sat.</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="job_sat"
+                                                                value="{{employee.job_sat}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Marital Sts.</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="marital_sts"
+                                                                value="{{employee.marital_sts}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Num. Comp.
+                                                                Worked</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control"
+                                                                name="num_comp_worked"
+                                                                value="{{employee.num_comp_worked}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Salary</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="salary"
+                                                                value="{{employee.salary}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">WLB</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="wlb"
+                                                                value="{{employee.wlb}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-3 align-items-center">
+                                                        <div class="col-4 d-flex justify-content-end">
+                                                            <label for="exampleFormControlInput1">Years at Comp.</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="text" class="form-control" name="years_at_comp"
+                                                                value="{{employee.years_at_comp}}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col d-flex justify-content-end">
+                                                            <input class="btn btn-primary btn-sm me-2" type="submit"
+                                                                value="Simpan Perubahan">
+                                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                                data-bs-dismiss="modal">Batal</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--- Colose Modal Edit -->
+                                <!--- modal delete ---->
+                                <div class="modal fade modal" id="delete{{employee.id}}Modal" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                    <font style="color: red;"><i
+                                                            class="fa-solid fa-circle-exclamation"></i>
+                                                        &ensp; Peringatan.</font>
+                                                </h1>
+                                            </div>
+                                            <div class="modal-body justify-content-md-center">
+                                                <div></div>
+                                                <p>Apa Anda yakin akan mengapus data {{employee.id}}?</p>
+                                                <div class="row">
+                                                    <div class="col d-flex justify-content-end">
+                                                        <form action="/delete" method="POST">
+                                                            <input type="hidden" name="id" value="{{employee.id}}">
+                                                            <input class="btn btn-danger btn-sm me-2" type="submit"
+                                                                value="Ya, hapus">
+                                                        </form>
+                                                        <button type="button" class="btn btn-secondary btn-sm"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--- Modal Add -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    Tambah Data Karyawan</h1>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Age</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="age">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Department</span>
+                        <select class="form-select" aria-label="Default select example" name="department">
+                            <option selected>Pilih opsi</option>
+                            <option value="DP1">Research & Development</option>
+                            <option value="DP2">Sales</option>
+                            <option value="DP3">Human Resources</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Dist. from Home</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="dist_from_home">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Education</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="edu">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Edu. Field</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="edu_field">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Env. Satisfaction</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="env_sat">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Job Satisfaction</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="job_sat">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Marital Status</span>
+                        <select class="form-select" aria-label="Default select example" name="department">
+                            <option selected>Pilih opsi</option>
+                            <option value="DP1">Single</option>
+                            <option value="DP2">Married</option>
+                            <option value="DP3">Divorced</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Num. Company Worked</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="num_comp_worked">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Salary</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="salary">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Worked Life Balance</span>
+                        <input type="number" class="form-control" aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default" name="salary">
+                    </div>
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <!--<input class="btn btn-primary btn-sm me-2" type="submit" value="Tambah">-->
+                            <button type="button" class="btn btn-primary btn-sm"
+                                data-bs-dismiss="modal">Tambah</button>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                                data-bs-dismiss="modal">Batal</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--- Colose Add Modal -->
+
+<!--- Messages --->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<!-- Message Modal -->
+<div class="modal fade modal-sm" id="messageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    <font style="color: green;"><i class="fa-solid fa-circle-check"></i>
+                        &ensp; Aksi Berhasil.</font>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body justify-content-md-center">
+                {% for message in messages %}
+                <p>{{message}}</p>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% endblock %}

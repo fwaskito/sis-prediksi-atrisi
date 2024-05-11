@@ -1,0 +1,122 @@
+{% extends "base2.html" %}
+
+{% block title %}Histori Data Karyawan{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12 col-12">
+            <div class="data_table">
+                <div class="row align-items-end">
+                    <div class="p-2 col-md-2 col-4 border shadow-sm">
+                        <small><b>Pengguna</b>: {{ session.get('user')['name'] }}</small></br>
+                        <small><b>Anda login sebagai</b>: {{ session.get('user')['type'] }}</small>
+                    </div>
+                    <div class="col text-center">
+                        <h4><b>Histori Data Karyawan</b></h4>
+                    </div>
+                    
+                    <div class="col-md-2 col-4 border bg-light shadow">
+                        Distribusi kelas <br>
+                        <table class="table table-dark">
+                            <tr>
+                                <td class="table table-danger"><b><i>Yes</i></b>:</td>
+                                <td class="table table-dark">{{class_distrib.class_yes}}</td>
+                                <td class="table table-success"><b><i>No</i></b>:</td>
+                                <td class="table table-dark">{{class_distrib.class_no}}</td>
+                            </tr>
+                        </table>
+                        <!--
+                        <button class="btn btn-primary btn-sm shadow-sm" id="btn-show-all-children" type="button">Expand
+                            All</button>
+                        <button class="btn btn-light btn-sm btn-outline-danger shadow-sm" id="btn-hide-all-children"
+                            type="button">Collapse All</button>-->
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+
+                        <table id="example" class="table table-bordered shadow" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mod. Action&emsp;&emsp;&emsp;&emsp;&ensp;</th>
+                                    <th>Mod. Date&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th>Attrition</th>
+                                    <th>Age</th>
+                                    <th>Department</th>
+                                    <th>DFH</th>
+                                    <th>Edu.</th>
+                                    <th>Edu. field</th>
+                                    <th class="none">Env. Sat.&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;</th>
+                                    <th class="none">Job Sat.&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Marital sts.&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;</th>
+                                    <th class="none">Num. comp. worked &ensp;</th>
+                                    <th class="none">Salary&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;</th>
+                                    <th class="none">WLB&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;</th>
+                                    <th class="none">Years at comp.&emsp;&emsp;&emsp;&nbsp;</th>
+
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mod. Action</th>
+                                    <th>Mod. Date</th>
+                                    <th>Attrition</th>
+                                    <th>Age</th>
+                                    <th>Department</th>
+                                    <th>DFH</th>
+                                    <th>Edu.</th>
+                                    <th>Edu. field</th>
+                                    <th>Env. sat.</th>
+                                    <th>Job sat.</th>
+                                    <th>Marital sts.</th>
+                                    <th>Num. comp. worked</th>
+                                    <th>Salary</th>
+                                    <th>WLB</th>
+                                    <th>Years at comp.</th>
+
+                                </tr>
+                            </tfoot>
+                            <tbody class="table table-dark table-group-divider">
+                                {% for i in range(employees_history|length) %}
+                                <tr class="pd-2">
+                                    <td>{{employees_history[i].employee_id}}</td>
+                                    {% if employees_history[i].mod_action == 'delete' %}
+                                    <td><font style="color:red;"><strong><i>{{employees_history[i].mod_action}}</i></strong></font></td>
+                                    {% else %}
+                                    <td><font style="color:green;"><strong><i>{{employees_history[i].mod_action}}</i></strong></font></td>
+                                    {% endif %}
+                                    <td>{{employees_history[i].mod_date}}</td>
+                                    {% if employees_history[i].attrition == 'Yes' %}
+                                    <td class="table table-danger">{{employees_history[i].attrition}}</td>
+                                    {% else %}
+                                    <td class="table table-success">{{employees_history[i].attrition}}</td>
+                                    {% endif %}
+                                    <td>{{employees_history[i].age}}</td>
+                                    <td>{{employees_history[i].department_name}}</td>
+                                    <td>{{employees_history[i].dist_from_home}} km</td>
+                                    <td>{{employees_history[i].edu}}</td>
+                                    <td>{{employees_history[i].edu_field}}</td>
+                                    <td>{{employees_history[i].env_sat}}</td>
+                                    <td>{{employees_history[i].job_sat}}</td>
+                                    <td>{{employees_history[i].marital_sts}}</td>
+                                    <td>{{employees_history[i].num_comp_worked}}</td>
+                                    <td>{{employees_history[i].salary}}</td>
+                                    <td>{{employees_history[i].wlb}}</td>
+                                    <td>{{employees_history[i].years_at_comp}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
